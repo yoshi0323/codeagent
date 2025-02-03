@@ -1,0 +1,23 @@
+{
+  "name": "code-analysis-app",
+  "version": "1.0.0",
+  "description": "GUIでGitHubリポジトリを解析し、RAGとLLMを用いて構成を表示するアプリケーション。",
+  "main": "main.js",
+  "scripts": {
+    "start": "npm run build && electron .",
+    "build": "webpack --mode development"
+  },
+  "dependencies": {
+    "electron": "^25.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.75.0",
+    "webpack-cli": "^4.10.0",
+    "babel-loader": "^9.1.2",
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "@babel/preset-react": "^7.18.6"
+  }
+} 
