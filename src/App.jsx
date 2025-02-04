@@ -7,11 +7,15 @@ import './App.css';
 function App() {
   return (
     <div className="app-container">
-      <h1>コード解析アプリ</h1>
-      <SideMenu>
-        <FileUploader />
-      </SideMenu>
-      <ChatBot />
+      <SideMenu />
+      <div className="main-content">
+        <div className="analysis-result">
+          <FileUploader />
+        </div>
+        <div className="chat-container">
+          <ChatBot />
+        </div>
+      </div>
     </div>
   );
 }
