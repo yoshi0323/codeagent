@@ -1,11 +1,55 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { getRAGResponse } from '../utils/rag';
 
 function ChatBot() {
-  // TODO: ユーザーの質問入力とAIからの回答を表示するチャットボットUIを実装する
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSend = async () => {
+    if (input.trim() === '') return;
+
+    setMessages(prev => [...prev, { text: input, sender: 'user' }]);
+    setIsLoading(true);
+
+    try {
+      const response = await getRAGResponse(input);
+      setMessages(prev => [...prev, { text: response, sender: 'ai' }]);
+    } catch (error) {
+      console.error('Error:', error);
+      setMessages(prev => [...prev, { 
+        text: error.message || 'エラーが発生しました。しばらく待ってから再度お試しください。', 
+        sender: 'system' 
+      }]);
+    } finally {
+      setIsLoading(false);
+      setInput('');
+    }
+  };
+
   return (
     <div>
       <h2>チャットボット</h2>
-      <p>ここに質問と回答が表示されます。</p>
+      <div className="chat-messages">
+        {messages.map((msg, index) => (
+          <div key={index} className={`message ${msg.sender}`}>
+            {msg.text}
+          </div>
+        ))}
+        {isLoading && <div className="message system">応答を生成中...</div>}
+      </div>
+      <div className="chat-input">
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+          disabled={isLoading}
+        />
+        <button onClick={handleSend} disabled={isLoading}>
+          送信
+        </button>
+      </div>
     </div>
   );
 }
