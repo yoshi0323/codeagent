@@ -1,5 +1,4 @@
 import React from 'react';
-import FileUploader from './components/FileUploader';
 import SideMenu from './components/SideMenu';
 import ChatBot from './components/ChatBot';
 import './App.css';
@@ -10,7 +9,7 @@ function App() {
       <SideMenu />
       <div className="main-content">
         <div className="analysis-result">
-          <FileUploader />
+          {/* FileUploaderを削除 */}
         </div>
         <div className="chat-container">
           <ChatBot />

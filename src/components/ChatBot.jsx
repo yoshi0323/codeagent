@@ -28,23 +28,26 @@ function ChatBot() {
   };
 
   return (
-    <div>
+    <div className="chatbot-container">
       <h2>チャットボット</h2>
-      <div className="chat-messages">
-        {messages.map((msg, index) => (
-          <div key={index} className={`message ${msg.sender}`}>
-            {msg.text}
-          </div>
-        ))}
-        {isLoading && <div className="message system">応答を生成中...</div>}
+      <div className="chat-content">
+        <div className="chat-messages">
+          {messages.map((msg, index) => (
+            <div key={index} className={`message ${msg.sender}`}>
+              {msg.text}
+            </div>
+          ))}
+          {isLoading && <div className="message system">応答を生成中...</div>}
+        </div>
       </div>
-      <div className="chat-input">
+      <div className="chat-input-container">
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && handleSend()}
           disabled={isLoading}
+          placeholder="メッセージを入力..."
         />
         <button onClick={handleSend} disabled={isLoading}>
           送信

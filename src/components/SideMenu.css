@@ -1,5 +1,5 @@
 .side-menu {
-  width: 200px;
+  width: 300px;
   height: 100vh;
   background-color: #f5f5f5;
   border-right: 1px solid #e0e0e0;
@@ -16,6 +16,12 @@
   gap: 15px;
 }
 
+.url-input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .url-input {
   width: 100%;
   padding: 6px;
@@ -30,19 +36,25 @@
   gap: 10px;
 }
 
+/* すべてのボタンに共通のスタイルを適用 */
 .menu-button, .upload-button {
-  width: 100%;
+  width: 100%;  /* 幅を100%に統一 */
   padding: 8px;
-  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   text-align: center;
   font-size: 0.9em;
+  min-height: 35px;  /* 最小の高さを設定 */
+  box-sizing: border-box;  /* パディングを幅に含める */
 }
 
-.menu-button:hover, .upload-button:hover {
+.menu-button {
+  background-color: #007bff;
+}
+
+.menu-button:hover {
   background-color: #0056b3;
 }
 
