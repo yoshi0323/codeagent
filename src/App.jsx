@@ -11,17 +11,19 @@ function App() {
     <div className="app-container">
       <SideMenu onAnalysisComplete={setAnalysisResult} />
       <div className="main-content">
-        {analysisResult && (
-          <div className="analysis-result">
-            <h2>システム分析結果</h2>
-            <div className="analysis-content">
-              {analysisResult.split('\n').map((line, index) => (
+        <div className="analysis-result">
+          <h2>システム分析結果</h2>
+          <div className="analysis-content">
+            {analysisResult ? (
+              analysisResult.split('\n').map((line, index) => (
                 <p key={index}>{line}</p>
-              ))}
-            </div>
+              ))
+            ) : (
+              <p>解析結果がここに表示されます</p>
+            )}
           </div>
-        )}
-        <div className="chat-container">
+        </div>
+        <div className="chat-section">
           <ChatBot />
         </div>
       </div>
@@ -29,4 +31,4 @@ function App() {
   );
 }
 
-export default App; 
+export default App;

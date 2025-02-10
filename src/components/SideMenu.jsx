@@ -178,6 +178,11 @@ const SideMenu = ({ onAnalysisComplete }) => {
     }
   };
 
+  const handleUrlLoad = () => {
+    // TODO: URLからの読み込み処理
+    console.log('Loading URL:', url);
+  };
+
   return (
     <div className="side-menu">
       <div className="menu-content">

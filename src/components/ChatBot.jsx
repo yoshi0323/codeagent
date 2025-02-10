@@ -86,14 +86,14 @@ ${input}
           </div>
         )}
       </div>
-      <div className="chat-input">
+      <div className="chat-input-container">
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-          placeholder="質問を入力してください..."
           disabled={isLoading}
+          placeholder="メッセージを入力..."
         />
         <button onClick={handleSend} disabled={isLoading}>
           送信

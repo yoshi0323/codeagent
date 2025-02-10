@@ -29,7 +29,7 @@ ${snippet.content}
 `).join('\n\n');
 
     // プロンプトタイプに応じてテンプレートを選択
-    const promptTemplate = type === 'analysis' ? 
+    let promptTemplate = type === 'analysis' ? 
       `
 あなたは上級ソフトウェアアーキテクトとして、このシステムの包括的な分析を行ってください。
 コードを詳細に解析し、システムの全体像を明確に説明してください。
@@ -139,6 +139,27 @@ ${contextPrompt}
 • 
 • 
 `;
+
+    promptTemplate += `
+
+ディレクトリ構造を表示する際は、必ず以下の形式を使用してください：
+
+\`\`\`
+project-name
+├── folder1
+│   ├── file1.js
+│   └── file2.js
+└── folder2
+    └── file3.js
+\`\`\`
+
+表示ルール：
+- フォルダの下の要素は├──（途中）または└──（最後）で接続
+- サブディレクトリがある場合は│で縦線を表示
+- 最後の要素には└──を使用
+- コードブロックで必ず囲む
+
+${question}`;
 
     const apiResponse = await callGeminiAPI(promptTemplate);
     
