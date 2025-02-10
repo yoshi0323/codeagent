@@ -102,4 +102,70 @@
   border-radius: 50%;
   border-top-color: transparent;
   animation: spin 1s linear infinite;
+}
+
+.progress-bar {
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  height: 8px;
+  margin-top: 10px;
+}
+
+.progress {
+  height: 100%;
+  background-color: #28a745;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+/* コードブロックのスタイル */
+.code-block-wrapper {
+  margin: 1rem 0;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #1e1e1e;
+}
+
+.code-block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: #2d2d2d;
+}
+
+.language-label {
+  color: #e0e0e0;
+  font-size: 12px;
+  font-family: monospace;
+}
+
+.copy-button {
+  padding: 4px 8px;
+  font-size: 12px;
+  color: #fff;
+  background: #444;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.copy-button:hover {
+  background: #555;
+}
+
+.markdown-content {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.markdown-content pre {
+  margin: 0;
+  padding: 0;
+}
+
+.markdown-content code {
+  font-family: 'Consolas', 'Monaco', monospace;
 } 

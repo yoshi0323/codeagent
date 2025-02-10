@@ -4,10 +4,11 @@ import { getRAGResponse } from '../utils/rag';
 import { embedCode } from '../utils/embedding';
 import './SideMenu.css';
 
-const SideMenu = ({ onAnalysisComplete }) => {
+const SideMenu = ({ onAnalysisComplete, chatHistory = [] }) => {
   const [repoUrl, setRepoUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [currentAction, setCurrentAction] = useState('');
+  const [progress, setProgress] = useState(0);
 
   const handleRepoSubmit = async () => {
     if (!repoUrl.trim()) {
@@ -30,7 +31,64 @@ const SideMenu = ({ onAnalysisComplete }) => {
       await fetchAndMergeMainBranch(owner, repo, process.cwd());
       
       // システム分析を実行
-      const analysisPrompt = 'このリポジトリのシステム構造と実装の詳細な分析を行ってください。';
+      const analysisPrompt = `
+# リポジトリ分析
+
+以下の形式で分析結果を出力してください：
+
+## 1. リポジトリ概要
+• リポジトリ名: ${repo}
+• オーナー: ${owner}
+• 主要な機能と目的
+
+## 2. プロジェクト構造
+\`\`\`plaintext:directory-structure
+root/
+  ├── src/
+  │   ├── components/
+  │   ├── utils/
+  │   └── ...
+  ├── public/
+  └── package.json
+\`\`\`
+
+## 3. 主要なファイル
+各ファイルの役割と重要な実装：
+
+### コアコンポーネント
+\`\`\`javascript:src/components/MainComponent.jsx
+// 重要なコンポーネントの実装例
+import React from 'react';
+
+function MainComponent() {
+  // 実装の詳細
+}
+\`\`\`
+
+### ユーティリティ関数
+\`\`\`javascript:src/utils/helpers.js
+// 重要なユーティリティ関数
+export function helper() {
+  // 実装の詳細
+}
+\`\`\`
+
+## 4. 依存関係
+• 主要なパッケージとバージョン
+• 開発環境の設定
+
+## 5. 実装の特徴
+• アーキテクチャパターン
+• コーディング規約
+• 特筆すべき実装方法
+
+注意：
+• コードブロックは必ずバッククォート3つで囲む
+• 言語指定とファイルパスを必ず記載
+• ファイル構造は tree 形式で表示
+• 重要なコードは実際の実装を表示
+`;
+
       const analysisResult = await getRAGResponse(analysisPrompt, '', 'analysis');
       onAnalysisComplete(analysisResult);
     } catch (error) {
@@ -47,35 +105,38 @@ const SideMenu = ({ onAnalysisComplete }) => {
     setCurrentAction('analysis');
     try {
       const analysisPrompt = `
-システムの全体構造と実行フローを詳細に分析し、以下の点について具体的に説明してください：
+# コード解析
 
-1. システムアーキテクチャ
-   • 各ディレクトリの役割と責任
-   • ファイル間の依存関係
-   • 主要なコンポーネントの関係図
+以下の形式で解析結果を出力してください：
 
-2. 実行フロー
-   • アプリケーションの起動から終了までの流れ
-   • 各コンポーネントの初期化と実行順序
-   • データの流れと状態管理の方法
+1. 各セクションは見出し（##）を使用
+2. コードは必ずコードブロックで表示
+3. 説明は簡潔で分かりやすく
 
-3. 主要コンポーネントの詳細
-   • 各ファイルの主要な機能と役割
-   • 重要な関数とメソッドの説明
-   • コンポーネント間の通信方法
+## システム構造
+• プロジェクトの概要
+• 主要なファイルとその役割
+• 依存関係の説明
 
-4. 技術スタックと実装の特徴
-   • 使用されている主要なライブラリと役割
-   • 特筆すべき実装パターンや最適化
-   • エラーハンドリングの方法
+## 主要コンポーネント
+各コンポーネントについて：
+\`\`\`javascript:src/components/ComponentName.jsx
+// 重要なコードブロック
+\`\`\`
 
-出力形式：
-• 見出しと箇条書きを使用して階層的に整理
-• コードブロックは適切な言語指定とインデント
-• 図表やダイアグラムは ASCII アートで表現
-• ファイルパスは完全なパスで記載
+## データフロー
+• 処理の流れを説明
+• 重要な関数の実装例：
+\`\`\`javascript:src/utils/example.js
+function example() {
+  // 実装の例
+}
+\`\`\`
 
-各セクションは改行で区切り、読みやすさを重視してください。
+注意：
+• コードブロックは必ずバッククォート3つで囲む
+• 言語指定とファイルパスを必ず記載
+• シンタックスハイライトが適用されるように正しく記述
 `;
       const analysisResult = await getRAGResponse(analysisPrompt, '', 'code_analysis');
       onAnalysisComplete(analysisResult);
@@ -93,21 +154,33 @@ const SideMenu = ({ onAnalysisComplete }) => {
     setCurrentAction('improvement');
     try {
       const improvementPrompt = `
-コードベースを詳細に分析し、以下の観点から具体的な改善提案を行ってください：
+# 改善提案
 
-1. コードの品質と保守性
-2. パフォーマンスの最適化
-3. セキュリティの強化
-4. エラーハンドリングの改善
+各提案は以下の形式で記述してください：
 
-各提案について：
-• 問題点の具体的な説明
-• 修正前と修正後のコードを明確に提示
-• 改善による具体的なメリット
-• 実装時の注意点
+## 1. 改善点の概要
+• 問題点の説明
+• 改善による効果
 
-コードブロックは必ず適切な言語指定とファイルパスを含め、
-説明は箇条書きと適切な改行で読みやすく整形してください。
+## 2. 具体的な修正案
+【現在のコード】
+\`\`\`javascript:src/components/Target.jsx
+// 現在の実装
+\`\`\`
+
+【改善後のコード】
+\`\`\`javascript:src/components/Target.jsx
+// 改善された実装
+\`\`\`
+
+## 3. 実装手順
+1. 修正手順の詳細
+2. 注意点や考慮事項
+
+注意：
+• コードの変更は必ずコードブロックで表示
+• ファイルパスと言語を明記
+• 変更前後の違いを明確に
 `;
       const improvementResult = await getRAGResponse(improvementPrompt, '', 'improvement');
       onAnalysisComplete(improvementResult);
@@ -126,48 +199,49 @@ const SideMenu = ({ onAnalysisComplete }) => {
 
     setIsLoading(true);
     setCurrentAction('upload');
+    setProgress(0);
 
     try {
-      // ファイルの処理
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         const content = await file.text();
         await embedCode(content, file.name);
+        setProgress(((i + 1) / files.length) * 100);
       }
 
-      // アップロード後に自動で解析を実行
-      const analysisPrompt = `
-システムの全体構造と実行フローを詳細に分析し、以下の点について具体的に説明してください：
+      // ファイル処理後の分析プロンプト
+      const uploadAnalysisPrompt = `
+# プロジェクト分析
 
-1. システムアーキテクチャ
-   • 各ディレクトリの役割と責任
-   • ファイル間の依存関係
-   • 主要なコンポーネントの関係図
+以下の形式で分析結果を出力してください：
 
-2. 実行フロー
-   • アプリケーションの起動から終了までの流れ
-   • 各コンポーネントの初期化と実行順序
-   • データの流れと状態管理の方法
+## 1. プロジェクト概要
+• 目的と主要機能
+• 技術スタックの説明
 
-3. 主要コンポーネントの詳細
-   • 各ファイルの主要な機能と役割
-   • 重要な関数とメソッドの説明
-   • コンポーネント間の通信方法
+## 2. ファイル構造
+\`\`\`plaintext:project-structure
+src/
+  ├── components/
+  │   ├── Component1.jsx
+  │   └── Component2.jsx
+  └── utils/
+      └── helpers.js
+\`\`\`
 
-4. 技術スタックと実装の特徴
-   • 使用されている主要なライブラリと役割
-   • 特筆すべき実装パターンや最適化
-   • エラーハンドリングの方法
+## 3. 主要コンポーネント
+各コンポーネントの説明と実装例：
+\`\`\`javascript:src/components/Example.jsx
+// コードブロック
+\`\`\`
 
-出力形式：
-• 見出しと箇条書きを使用して階層的に整理
-• コードブロックは適切な言語指定とインデント
-• 図表やダイアグラムは ASCII アートで表現
-• ファイルパスは完全なパスで記載
-
-各セクションは改行で区切り、読みやすさを重視してください。
+注意：
+• コードは必ずコードブロックで表示
+• ファイル構造は tree 形式で表示
+• 重要な実装は具体的なコードで説明
 `;
-      const analysisResult = await getRAGResponse(analysisPrompt, '', 'code_analysis');
+
+      const analysisResult = await getRAGResponse(uploadAnalysisPrompt, '', 'code_analysis');
       onAnalysisComplete(analysisResult);
     } catch (error) {
       console.error('Error processing files:', error);
@@ -175,6 +249,7 @@ const SideMenu = ({ onAnalysisComplete }) => {
     } finally {
       setIsLoading(false);
       setCurrentAction('');
+      setProgress(0);
     }
   };
 
@@ -229,6 +304,25 @@ const SideMenu = ({ onAnalysisComplete }) => {
             {isLoading && currentAction === 'improvement' ? '修正案を生成中...' : '修正提案'}
           </button>
         </div>
+
+        <div className="history-section">
+          <h3>履歴</h3>
+          <div className="history-list">
+            {chatHistory.map((item, index) => (
+              <div key={index} className="history-item">
+                <span className="history-type">{item.type}：</span>
+                <span className="history-title">{item.title}</span>
+                <span className="history-time">{item.time}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {isLoading && (
+          <div className="progress-bar">
+            <div className="progress" style={{ width: `${progress}%` }}></div>
+          </div>
+        )}
       </div>
     </div>
   );
