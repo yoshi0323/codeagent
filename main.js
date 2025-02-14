@@ -14,9 +14,14 @@ app.on('ready', () => {
 });
 
 function createWindow() {
+  // プライマリディスプレイのサイズを取得
+  const { width, height } = require('electron').screen.getPrimaryDisplay().workAreaSize;
+
   const win = new BrowserWindow({
-    width: 1200,
-    height: 300,
+    width: width,
+    height: height,
+    minWidth: 800, // 最小ウィンドウサイズを設定
+    minHeight: 600,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -26,6 +31,9 @@ function createWindow() {
       backgroundThrottling: false
     }
   });
+
+  // ウィンドウを最大化
+  win.maximize();
 
   // macOS向けのメニュー設定
   if (process.platform === 'darwin') {

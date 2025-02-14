@@ -1,78 +1,110 @@
-.app-container {
-  display: flex;
+html, body {
+  margin: 0;
+  padding: 0;
   height: 100vh;
   overflow: hidden;
 }
 
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: #f8f9fa;
+}
+
+/* メインコンテンツエリア */
 .main-content {
   flex: 1;
-  padding: 20px;
-  overflow-y: auto;
-}
-
-.analysis-result {
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.analysis-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
-}
-
-.analysis-content p {
-  margin: 8px 0;
-}
-
-.chat-container {
-  padding: 20px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-body, html {
-  margin: 0;
-  padding: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-width: 0; /* flexboxのはみ出し防止 */
+  position: relative;
   overflow: hidden;
 }
 
-.chat-messages {
-  max-height: 400px;
+/* メッセージ表示エリア */
+.messages-container {
+  flex: 1;
   overflow-y: auto;
-  margin-bottom: 15px;
+  padding: 20px 40px;
+  padding-bottom: 100px;
+  box-sizing: border-box;
 }
 
-.chat-input {
+/* メッセージスタイル */
+.message {
+  margin: 10px 0;
+  padding: 12px;
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.message.user {
+  background: #e3f2fd;
+}
+
+.message.system {
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* 入力エリアを画面下部に固定 */
+.chat-input-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #f8f9fa;
+  border-top: 1px solid #e1e4e8;
+  padding: 20px 40px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.input-wrapper {
   display: flex;
   gap: 10px;
+  align-items: flex-start;
+  width: 100%;
 }
 
-.chat-input input {
+.input-wrapper textarea {
   flex: 1;
-  padding: 8px;
-  border: 1px solid #ccc;
+  min-height: 40px;
+  max-height: 200px;
+  padding: 10px;
+  border: 1px solid #ddd;
   border-radius: 4px;
+  resize: none;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-y: auto;
 }
 
-.chat-input button {
-  padding: 8px 20px;
-  background: #007bff;
+.input-wrapper button {
+  padding: 10px 20px;
+  background: #0366d6;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  white-space: nowrap;
+  height: 40px;
 }
 
-.chat-input button:hover {
-  background: #0056b3;
+.input-wrapper button:hover {
+  background: #0255b3;
 }
 
-/* コードブロックのスタイル */
+.input-wrapper button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
 .code-block-wrapper {
   margin: 1rem 0;
   border-radius: 6px;
@@ -112,7 +144,6 @@ body, html {
 .markdown-content {
   font-size: 14px;
   line-height: 1.6;
-  padding: 20px;
 }
 
 .markdown-content pre {
@@ -124,10 +155,58 @@ body, html {
   font-family: 'Consolas', 'Monaco', monospace;
 }
 
+.analysis-result {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
 .analysis-content {
-  background: white;
+  background-color: #fff;
+  padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  margin: 20px;
-  overflow: auto;
-} 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+}
+
+.analysis-content p {
+  margin: 8px 0;
+}
+
+.chat-container {
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.chat-messages {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 15px;
+}
+
+.chat-input {
+  display: flex;
+  gap: 10px;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.chat-input button {
+  padding: 8px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.chat-input button:hover {
+  background: #0056b3;
+}

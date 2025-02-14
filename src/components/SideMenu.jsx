@@ -4,7 +4,7 @@ import { getRAGResponse } from '../utils/rag';
 import { embedCode } from '../utils/embedding';
 import './SideMenu.css';
 
-const SideMenu = ({ onAnalysisComplete, chatHistory = [] }) => {
+const SideMenu = ({ onAnalysisComplete, chatHistory = [], onHistoryClick }) => {
   const [repoUrl, setRepoUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [currentAction, setCurrentAction] = useState('');
@@ -308,8 +308,12 @@ src/
         <div className="history-section">
           <h3>履歴</h3>
           <div className="history-list">
-            {chatHistory.map((item, index) => (
-              <div key={index} className="history-item">
+            {chatHistory.map((item) => (
+              <div 
+                key={item.timestamp}
+                className="history-item"
+                onClick={() => onHistoryClick(item.messageId)}
+              >
                 <span className="history-type">{item.type}：</span>
                 <span className="history-title">{item.title}</span>
                 <span className="history-time">{item.time}</span>
