@@ -44,7 +44,8 @@ module.exports = {
       stream: require.resolve('stream-browserify'),
       buffer: require.resolve('buffer/'),
       vm: require.resolve('vm-browserify'),
-      path: require.resolve('path-browserify')
+      path: require.resolve('path-browserify'),
+      process: require.resolve('process/browser'),
     }
   },
   plugins: [

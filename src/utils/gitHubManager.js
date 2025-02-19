@@ -25,16 +25,15 @@ async function fetchAndMergeMainBranch(owner, repo, currentPath) {
                 'Accept': 'application/vnd.github.v3.raw',
                 'Content-Type': 'application/json'
               },
-              responseType: 'text'  // レスポンスを文字列として取得
+              responseType: 'text'
             }
           );
-          
-          // レスポンスが文字列であることを確認
+
           const content = typeof fileResponse.data === 'string' 
             ? fileResponse.data 
             : JSON.stringify(fileResponse.data);
-          
-          // ファイルの内容をEmbedding
+
+          // Weaviateにデータを送信
           await embedCode(content, `${owner}/${repo}/${item.path}`);
         } catch (fileError) {
           console.warn(`Warning: Failed to process file ${item.path}:`, fileError.message);

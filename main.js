@@ -1,6 +1,17 @@
 // Electronのメインプロセス
 const { app, BrowserWindow, Menu } = require('electron');
 const path = require('path');
+const fs = require('fs'); // fsモジュールをインポート
+const dotenv = require('dotenv');
+
+// .envファイルの内容を環境変数に読み込む
+dotenv.config();
+
+// ログファイルのパスを設定
+const logFilePath = path.join(__dirname, 'app.log');
+
+// アプリケーションの起動時にログファイルを初期化
+fs.writeFileSync(logFilePath, '', { encoding: 'utf8' });
 
 // アプリケーションの起動時の処理
 app.on('ready', () => {
@@ -73,8 +84,8 @@ function createWindow() {
   // publicディレクトリのindex.htmlを読み込む
   win.loadFile(path.join(__dirname, 'public', 'index.html'));
 
-  // 開発ツールを開く（開発時のデバッグ用）
-  // win.webContents.openDevTools();
+  // 開発者ツールを自動で開く
+  win.webContents.openDevTools();
 }
 
 // macOS向けの設定

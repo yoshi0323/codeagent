@@ -4,6 +4,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { getRAGResponse } from './utils/rag';
 import SideMenu from './components/SideMenu';
+// import ChatBot from './components/ChatBot'; // ← チャットボットのインポートを削除/コメントアウト
 import './App.css';
 
 function App() {
@@ -196,6 +197,8 @@ function App() {
         chatHistory={chatHistory}
         onHistoryClick={handleHistoryClick}
       />
+
+      {/* ここが中央のチャットエリア */}
       <div className="main-content">
         <div className="messages-container">
           {messages.map((msg) => (
@@ -224,6 +227,7 @@ function App() {
           ))}
           <div ref={messagesEndRef} />
         </div>
+
         <div className="chat-input-container">
           <div className="input-wrapper">
             <textarea
@@ -257,6 +261,9 @@ function App() {
           </div>
         </div>
       </div>
+
+      {/* 右側のチャットボット呼び出しを削除/コメントアウト */}
+      {/* <ChatBot onNewMessage={handleNewMessage} /> */}
     </div>
   );
 }
